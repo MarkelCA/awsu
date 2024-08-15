@@ -1,7 +1,7 @@
 import argparse
 import sys
 import argcomplete
-from aws_utils import ec2
+from aws_utils.services import ec2, s3
 
 parser = argparse.ArgumentParser(
                     prog='awsu',
@@ -10,14 +10,13 @@ parser = argparse.ArgumentParser(
 
 # Create a subparsers object that will hold the subcommands
 subparsers = parser.add_subparsers(dest='command', help='Services')
+ec2.add_parser(subparsers)
+s3.add_parser(subparsers)
 
-s3_parser = subparsers.add_parser('s3', help='S3 Service Utilities')
-ec2.add_ec2_parser(subparsers)
 argcomplete.autocomplete(parser)
 
 
 
-# __main__.py
 def main():
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
     print(args)

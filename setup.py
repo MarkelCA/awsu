@@ -17,3 +17,7 @@ setup(
     },
 )
 
+# autocompletion message
+# eval "$(register-python-argcomplete awsu)" 
+print("To enable autocompletion run this after the installation has been completed: eval \"$(register-python-argcomplete awsu)\". You can add this line to your .bashrc or .bash_profile to enable autocompletion permanently.")
+
