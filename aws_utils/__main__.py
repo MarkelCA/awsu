@@ -1,6 +1,8 @@
 import argparse
 import sys
 import argcomplete
+from aws_utils import config
+from aws_utils.config import configure
 from aws_utils.services import ec2, s3
 
 parser = argparse.ArgumentParser(
@@ -12,6 +14,7 @@ parser = argparse.ArgumentParser(
 subparsers = parser.add_subparsers(dest='command', help='Services')
 ec2.add_parser(subparsers)
 s3.add_parser(subparsers)
+config.add_parser(subparsers)
 
 argcomplete.autocomplete(parser)
 
@@ -19,6 +22,8 @@ argcomplete.autocomplete(parser)
 
 def main():
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+    if args.command == 'configure':
+        configure.run()
     print(args)
 
 if __name__ == '__main__':
