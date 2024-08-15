@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(
                     epilog='Text at the bottom of help')
 
 # Create a subparsers object that will hold the subcommands
-subparsers = parser.add_subparsers(dest='command', help='Services')
+subparsers = parser.add_subparsers(dest='command', help='Commands')
 ec2.add_parser(subparsers)
 s3.add_parser(subparsers)
 config.add_parser(subparsers)

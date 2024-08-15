@@ -13,7 +13,20 @@ eval "$(register-python-argcomplete awsu)"
 ## Usage
 ```
 $ awsu
-Running awsu
+usage: awsu [-h] {ec2,s3,configure} ...
+
+AWS Utilities. An extensible aws wrapper built for custom features.
+
+positional arguments:
+  {ec2,s3,configure}  Commands
+    ec2               EC2 Service Utilities
+    s3                S3 Service Utilities
+    configure         Configure awsu CLI options.
+
+options:
+  -h, --help          show this help message and exit
+
+Text at the bottom of help
 ```
 
 ## Development
