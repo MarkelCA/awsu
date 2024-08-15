@@ -1,5 +1,6 @@
 import boto3
 from boto3.compat import sys
+from botocore.client import ClientError
 from aws_utils.config.configure import Config
 
 # Used to get properties from the AWS SDK's EC2 instance object.
@@ -24,3 +25,27 @@ def get(config: Config) -> str:
 
     return getattr(instance, aws_attribute)
 
+def reboot(config: Config):
+    ec2 = boto3.resource('ec2')
+
+    instance = ec2.Instance(config.ec2_instance_id)
+    instance.reboot()
+
+    try:
+        instance.reboot()
+        instance.wait_until_running()
+        return f"Instance {config.ec2_instance_id} rebooted successfully."
+    except ClientError as err:
+        return f"Couldn't reboot instance {config.ec2_instance_id}. Here's why: {err.response['Error']['Code']}: {err.response['Error']['Message']}"
+
+def start(config: Config):
+    ec2 = boto3.resource('ec2')
+
+    instance = ec2.Instance(config.ec2_instance_id)
+
+    try:
+        instance.start()
+        instance.wait_until_running()
+        return f"Instance {config.ec2_instance_id} started successfully."
+    except ClientError as err:
+        return f"Couldn't start instance {config.ec2_instance_id}. Here's why: {err.response['Error']['Code']}: {err.response['Error']['Message']}"
