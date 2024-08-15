@@ -1,0 +1,2 @@
+argcomplete==3.5.0
+awsu==0.1
