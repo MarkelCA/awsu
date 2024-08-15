@@ -4,7 +4,6 @@ import argcomplete
 from aws_utils import config
 from aws_utils.config import configure
 from aws_utils.services import ec2, s3
-from aws_utils.services.ec2 import instance
 
 parser = argparse.ArgumentParser(
                     prog='awsu',
@@ -26,8 +25,9 @@ def main():
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
     if args.command == 'configure':
         configure.run()
-    elif args.command == 'ec2' and 'get' in sys.argv and 'public-ip' in sys.argv:
-        instance.get(config.ec2_instance_id)
+    elif args.command == 'ec2':
+        result = ec2.run(config)
+        print(result)
     else:
         print(args, sys.argv)
 
