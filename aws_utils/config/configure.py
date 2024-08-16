@@ -20,6 +20,13 @@ def write_config(config: Config):
     with open(f'{config_dir}/config.yaml', 'w') as yaml_file:
         yaml.dump(config.__dict__, yaml_file)
 
+def update(key: str, value: str):
+    config = read_config()
+    if key not in config.__dict__:
+        print(f"Error - {key} is not a valid key in the config file.")
+        return
+    setattr(config, key, value)
+    write_config(config)
 
 def read_config() -> Config:
     if not os.path.exists(f'{config_dir}/config.yaml'):

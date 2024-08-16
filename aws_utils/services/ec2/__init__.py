@@ -1,6 +1,5 @@
 from aws_utils.config.configure import Config
-from aws_utils.services.ec2 import instance
-from aws_utils.services.ec2 import update_hosts
+from aws_utils.services.ec2 import update_hosts,get,start,reboot,replace_hosts,stop
 import sys
 
 def add_parser(subparsers):
@@ -16,21 +15,26 @@ def add_parser(subparsers):
 
     ec2_subparsers.add_parser('update-hosts', help='Update hosts file with your instance IP.')
     ec2_subparsers.add_parser('start', help='Start your instance.')
-    ec2_subparsers.add_parser('replace-hosts', help='Replace hosts file with the provided IP')
-    # ec2_parser.add_argument('ip', help='The IP to replace the current one in the hosts file.')
+    ec2_subparsers.add_parser('stop', help='Stop your instance.')
+
+    replace_hosts_parser = ec2_subparsers.add_parser('replace-hosts', help='Replace hosts file with the provided IP')
+    replace_hosts_parser.add_argument('old_ip', help='Current IP to replace in your hosts file') 
+    replace_hosts_parser.add_argument('new_ip', help='New IP of your instance')
 
 
 
 def run(config: Config) -> str:
     if 'get' in sys.argv:
-        return instance.get(config)
+        return get.run(config)
     elif 'reboot' in sys.argv:
-        return instance.reboot(config)
+        return reboot.run(config)
     elif 'update-hosts' in sys.argv:
         return update_hosts.run(config)
     elif 'start' in sys.argv:
-        return instance.start(config)
+        return start.run(config)
+    elif 'stop' in sys.argv:
+        return stop.run(config)
     elif 'replace-hosts' in sys.argv:
-        return update_hosts.replace(config, sys.argv[3])
+        return replace_hosts.run(sys.argv[-2], sys.argv[-1])
     else:
         return "No command found."
