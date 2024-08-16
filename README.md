@@ -1,7 +1,8 @@
 # awsu
-An extensible aws wrapper built for custom features.
+AWS Utilities. An extensible aws-sdk wrapper built for custom features.
 ## Install
 ### Requirements
+- [git](https://git-scm.com/)
 - [pip](https://pypi.org/project/pip/)
 ```bash
 git clone git@github.com:MarkelCA/awsu.git
@@ -33,6 +34,8 @@ Text at the bottom of help
 Create and activate the virtual environment:
 
 ```bash
+git clone git@github.com:MarkelCA/awsu.git
+cd awsu
 python3 -m venv .venv
 source .venv/bin/activate
 ```
