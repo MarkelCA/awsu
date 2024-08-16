@@ -27,7 +27,8 @@ def main():
         configure.run()
     elif args.command == 'ec2':
         result = ec2.run(config,args)
-        print(result)
+        if result:
+            print(result)
     else:
         print(args, sys.argv)
 

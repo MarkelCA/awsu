@@ -15,8 +15,10 @@ def add_parser(subparsers):
     # Other EC2 Subcommands
     ec2_subparsers.add_parser('reboot', help='Reboot your instance.')
     ec2_subparsers.add_parser('update-hosts', help='Update hosts file with your instance IP.')
-    ec2_subparsers.add_parser('start', help='Start your instance.')
-    ec2_subparsers.add_parser('stop', help='Stop your instance.')
+    start_subparser = ec2_subparsers.add_parser('start', help='Start your instance.')
+    start_subparser.add_argument('-w', '--wait', action='store_true', help='Wait until the instance is started.')
+    stop_subparser = ec2_subparsers.add_parser('stop', help='Stop your instance.')
+    stop_subparser.add_argument('-w', '--wait', action='store_true', help='Wait until the instance is stopped.')
 
     # Replace Hosts Subcommand
     replace_hosts_parser = ec2_subparsers.add_parser('replace-hosts', help='Replace hosts file with the provided IP')
@@ -24,17 +26,17 @@ def add_parser(subparsers):
     replace_hosts_parser.add_argument('new_ip', help='New IP of your instance')
 
 
-def run(config: Config, args) -> str:
+def run(config: Config, args) -> str|None:
     if args.subcommand == 'get':
         return get.run(config, args.get_command)
     elif args.subcommand == 'reboot':
         return reboot.run(config)
     elif args.subcommand == 'update-hosts':
-        return update_hosts.run(config)
+        update_hosts.run(config)
     elif args.subcommand == 'start':
-        return start.run(config)
+        return start.run(config, args)
     elif args.subcommand == 'stop':
-        return stop.run(config)
+        return stop.run(config, args)
     elif args.subcommand == 'replace-hosts':
         return replace_hosts.run(args.old_ip, args.new_ip)
     else:
