@@ -12,7 +12,7 @@ def run(config: Config):
 
     try:
         instance.stop()
-        instance.wait_until_running()
+        # instance.wait_until_stopped()
         return f"Instance {config.ec2_instance_id} stopped successfully."
     except ClientError as err:
         return f"Couldn't start instance {config.ec2_instance_id}. Here's why: {err.response['Error']['Code']}: {err.response['Error']['Message']}"
