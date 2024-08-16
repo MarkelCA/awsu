@@ -1,10 +1,18 @@
 from aws_utils.config.configure import Config
-from aws_utils.services.ec2 import update_hosts, get, start, reboot, replace_hosts, stop
+from aws_utils.services.ec2 import update_hosts, get, start, reboot, replace_hosts, stop, tags
 
 def add_parser(subparsers):
     ec2_parser = subparsers.add_parser('ec2', help='EC2 Service Utilities')
     
     ec2_subparsers = ec2_parser.add_subparsers(dest='subcommand', help='EC2 Subcommands')
+
+    tags_parser = ec2_subparsers.add_parser('tags', help='Edit your instance tags.')
+    tags_subparsers = tags_parser.add_subparsers(dest='tags_command', help='Tags Subcommands')
+    tags_set_parser = tags_subparsers.add_parser('set', help='Set tags to your instance.')
+    # tags_set_subparser = tags_set_parser.add_subparsers(dest='tags_set_command', help='Tags Set Subcommands')
+    tags_set_parser.add_argument('key', help='Key of the tag')
+    tags_set_parser.add_argument('value', help='Value of the tag')
+
     
     # Get Subcommand
     get_parser = ec2_subparsers.add_parser('get', help='Get data from your instance.')
@@ -39,6 +47,9 @@ def run(config: Config, args) -> str|None:
         return stop.run(config, args)
     elif args.subcommand == 'replace-hosts':
         return replace_hosts.run(args.old_ip, args.new_ip)
+    elif args.subcommand == 'tags':
+        return tags.run(config, args)
+
     else:
         return "No valid command found."
 
