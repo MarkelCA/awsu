@@ -10,6 +10,7 @@ def add_parser(subparsers):
     get_parser = ec2_subparsers.add_parser('get', help='Get data from your instance.')
     get_commands = get_parser.add_subparsers(help='Get Subcommands')
     get_commands.add_parser('public-ip', help='Get your instance public IP.')
+    get_commands.add_parser('state', help='Get your instance state.')
 
     ec2_subparsers.add_parser('reboot', help='Reboot your instance.')
 

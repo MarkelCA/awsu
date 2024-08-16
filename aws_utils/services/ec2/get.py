@@ -6,7 +6,8 @@ from aws_utils.config.configure import Config
 
 
 cli_aws_attributes = {
-    'public-ip': 'public_ip_address'
+    'public-ip': 'public_ip_address',
+    'state': 'state'
 }
 
 def run(config: Config) -> str:
@@ -16,6 +17,8 @@ def run(config: Config) -> str:
         return "You must provide an attribute to get from your instance."
 
     instance = ec2.Instance(config.ec2_instance_id)
+
+    print("Instance: ", instance)
 
     attribute = sys.argv[3]
     aws_attribute = cli_aws_attributes.get(attribute)
