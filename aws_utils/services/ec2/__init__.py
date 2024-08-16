@@ -1,41 +1,42 @@
 from aws_utils.config.configure import Config
-from aws_utils.services.ec2 import update_hosts,get,start,reboot,replace_hosts,stop
-import sys
+from aws_utils.services.ec2 import update_hosts, get, start, reboot, replace_hosts, stop
 
 def add_parser(subparsers):
     ec2_parser = subparsers.add_parser('ec2', help='EC2 Service Utilities')
-    ec2_subparsers = ec2_parser.add_subparsers(help='EC2 Subcommands')
-    ec2_subparsers.add_parser('update-hosts', help='Update hosts file with your instance IP.')
-
+    
+    ec2_subparsers = ec2_parser.add_subparsers(dest='subcommand', help='EC2 Subcommands')
+    
+    # Get Subcommand
     get_parser = ec2_subparsers.add_parser('get', help='Get data from your instance.')
-    get_commands = get_parser.add_subparsers(help='Get Subcommands')
-    get_commands.add_parser('public-ip', help='Get your instance public IP.')
-    get_commands.add_parser('state', help='Get your instance state.')
+    get_subparsers = get_parser.add_subparsers(dest='get_command', help='Get Subcommands')
+    get_subparsers.add_parser('public-ip', help='Get your instance public IP.')
+    get_subparsers.add_parser('state', help='Get your instance state.')
 
+    # Other EC2 Subcommands
     ec2_subparsers.add_parser('reboot', help='Reboot your instance.')
-
     ec2_subparsers.add_parser('update-hosts', help='Update hosts file with your instance IP.')
     ec2_subparsers.add_parser('start', help='Start your instance.')
     ec2_subparsers.add_parser('stop', help='Stop your instance.')
 
+    # Replace Hosts Subcommand
     replace_hosts_parser = ec2_subparsers.add_parser('replace-hosts', help='Replace hosts file with the provided IP')
-    replace_hosts_parser.add_argument('old_ip', help='Current IP to replace in your hosts file') 
+    replace_hosts_parser.add_argument('old_ip', help='Current IP to replace in your hosts file')
     replace_hosts_parser.add_argument('new_ip', help='New IP of your instance')
 
 
-
-def run(config: Config) -> str:
-    if 'get' in sys.argv:
-        return get.run(config)
-    elif 'reboot' in sys.argv:
+def run(config: Config, args) -> str:
+    if args.subcommand == 'get':
+        return get.run(config, args.get_command)
+    elif args.subcommand == 'reboot':
         return reboot.run(config)
-    elif 'update-hosts' in sys.argv:
+    elif args.subcommand == 'update-hosts':
         return update_hosts.run(config)
-    elif 'start' in sys.argv:
+    elif args.subcommand == 'start':
         return start.run(config)
-    elif 'stop' in sys.argv:
+    elif args.subcommand == 'stop':
         return stop.run(config)
-    elif 'replace-hosts' in sys.argv:
-        return replace_hosts.run(sys.argv[-2], sys.argv[-1])
+    elif args.subcommand == 'replace-hosts':
+        return replace_hosts.run(args.old_ip, args.new_ip)
     else:
-        return "No command found."
+        return "No valid command found."
+

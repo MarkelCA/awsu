@@ -22,11 +22,11 @@ argcomplete.autocomplete(parser)
 
 def main():
     config = configure.read_config()
-    args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+    args = parser.parse_args()
     if args.command == 'configure':
         configure.run()
     elif args.command == 'ec2':
-        result = ec2.run(config)
+        result = ec2.run(config,args)
         print(result)
     else:
         print(args, sys.argv)

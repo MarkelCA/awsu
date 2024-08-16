@@ -10,17 +10,15 @@ cli_aws_attributes = {
     'state': 'state'
 }
 
-def run(config: Config) -> str:
+def run(config: Config, attribute: str) -> str:
     ec2 = boto3.resource('ec2')
 
-    if len(sys.argv) < 4:
-        return "You must provide an attribute to get from your instance."
+    if not attribute:
+        print("No attribute provided. Use one of the following:")
+        return str(cli_aws_attributes.keys())
 
     instance = ec2.Instance(config.ec2_instance_id)
 
-    print("Instance: ", instance)
-
-    attribute = sys.argv[3]
     aws_attribute = cli_aws_attributes.get(attribute)
 
     if aws_attribute is None:
