@@ -19,6 +19,7 @@ def add_parser(subparsers):
     get_subparsers = get_parser.add_subparsers(dest='get_command', help='Get Subcommands')
     get_subparsers.add_parser('public-ip', help='Get your instance public IP.')
     get_subparsers.add_parser('state', help='Get your instance state.')
+    get_parser.add_argument('-n', '--name', type=str, help='Value of the Name tag of your instance.')
 
     # Other EC2 Subcommands
     ec2_subparsers.add_parser('reboot', help='Reboot your instance.')
@@ -36,7 +37,7 @@ def add_parser(subparsers):
 
 def run(config: Config, args) -> str|None:
     if args.subcommand == 'get':
-        return get.run(config, args.get_command)
+        return get.run(config, args)
     elif args.subcommand == 'reboot':
         return reboot.run(config)
     elif args.subcommand == 'update-hosts':

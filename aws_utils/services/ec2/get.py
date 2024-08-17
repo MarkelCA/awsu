@@ -1,3 +1,4 @@
+from argparse import Namespace
 import boto3
 from boto3.compat import sys
 
@@ -10,19 +11,31 @@ cli_aws_attributes = {
     'state': 'state'
 }
 
-def run(config: Config, attribute: str) -> str:
-    ec2 = boto3.resource('ec2')
+cli_describe_attributes = {
+    'public-ip': 'PublicIpAddress',
+    'state': 'State'
+}
 
-    if not attribute:
-        print("No attribute provided. Use one of the following:")
-        return str(cli_aws_attributes.keys())
+def run(config: Config, args: Namespace ) -> str|None:
+    client = boto3.client('ec2')
 
-    instance = ec2.Instance(config.ec2_instance_id)
+    if args.name:
+        custom_filter = [{
+            'Name':'tag:Name', 
+            'Values': [args.name]}
+        ]
+    else:
+        custom_filter = [{
+            'Name':'instance-id', 
+            'Values': [config.ec2_instance_id]}
+        ]
 
-    aws_attribute = cli_aws_attributes.get(attribute)
 
-    if aws_attribute is None:
-        print("Invalid attribute. Use one of the following:")
-        return str(cli_aws_attributes.keys())
+    response = client.describe_instances(Filters=custom_filter)
+    for reservation in response["Reservations"]:
+        for instance in reservation["Instances"]:
+            instance_attribute = cli_describe_attributes.get(args.get_command)
+            if instance_attribute is None:
+                return "Invalid attribute. Use one of the following: " + str(list(cli_describe_attributes.keys()))
 
-    return getattr(instance, aws_attribute)
+            print(instance.get(instance_attribute))
