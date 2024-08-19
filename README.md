@@ -7,7 +7,7 @@ AWS Utilities. An extensible aws-sdk wrapper built for custom features.
 ```bash
 git clone git@github.com:MarkelCA/awsu.git
 cd awsu
-sudo python setup.py install
+sudo python3 setup.py install
 # This will enable tab completion for the current session. Add it to your .bashrc or .zshrc to make it permanent:
 eval "$(register-python-argcomplete awsu)" 
 ```
