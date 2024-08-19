@@ -21,16 +21,19 @@ argcomplete.autocomplete(parser)
 
 
 def main():
-    config = configure.read_config()
-    args = parser.parse_args()
-    if args.command == 'configure':
-        configure.run()
-    elif args.command == 'ec2':
-        result = ec2.run(config,args)
-        if result:
-            print(result)
-    else:
-        print(args, sys.argv)
+    try:
+        config = configure.read_config()
+        args = parser.parse_args()
+        if args.command == 'configure':
+            configure.run()
+        elif args.command == 'ec2':
+            result = ec2.run(config,args)
+            if result:
+                print(result)
+        else:
+            print(args, sys.argv)
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':

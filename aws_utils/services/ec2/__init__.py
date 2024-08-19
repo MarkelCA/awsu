@@ -23,7 +23,8 @@ def add_parser(subparsers):
 
     # Other EC2 Subcommands
     ec2_subparsers.add_parser('reboot', help='Reboot your instance.')
-    ec2_subparsers.add_parser('update-hosts', help='Update hosts file with your instance IP.')
+    update_hosts_parser = ec2_subparsers.add_parser('update-hosts', help='Update hosts file with your instance IP.')
+    update_hosts_parser.add_argument('-n', '--name', type=str, help='Value of the Name tag of your instance.')
     start_subparser = ec2_subparsers.add_parser('start', help='Start your instance.')
     start_subparser.add_argument('-w', '--wait', action='store_true', help='Wait until the instance is started.')
     stop_subparser = ec2_subparsers.add_parser('stop', help='Stop your instance.')
@@ -41,7 +42,7 @@ def run(config: Config, args) -> str|None:
     elif args.subcommand == 'reboot':
         return reboot.run(config)
     elif args.subcommand == 'update-hosts':
-        update_hosts.run(config)
+        update_hosts.run(config,args)
     elif args.subcommand == 'start':
         return start.run(config, args)
     elif args.subcommand == 'stop':
