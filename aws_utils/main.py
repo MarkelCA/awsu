@@ -31,7 +31,7 @@ def main():
             if result:
                 print(result)
         else:
-            print(args, sys.argv)
+            parser.print_help()
     except Exception as e:
         print(e)
 
