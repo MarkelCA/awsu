@@ -14,12 +14,9 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'awsu=aws_utils.__main__:main',  # Points to the main function in `__main__.py`
+            'awsu=aws_utils.main:main',
         ],
     },
 )
 
-# autocompletion message
-# eval "$(register-python-argcomplete awsu)" 
-print("To enable autocompletion run this after the installation has been completed: eval \"$(register-python-argcomplete awsu)\". You can add this line to your .bashrc or .bash_profile to enable autocompletion permanently.")
-
+print("To enable autocompletion run this after the installation has been completed. You can add this line to your .bashrc or .bash_profile to enable autocompletion permanently:\neval \"$(register-python-argcomplete awsu)\"")
